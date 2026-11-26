@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Store screenshot</title>
+<style>
+  :root {
+    --u: min(1vw, 1.6vh);
+    --bg1: #070b1f;
+    --bg2: #241b4e;
+    --orb1: #7c3aed;
+    --orb2: #22d3ee;
+    --orb3: #f472b6;
+    --ink: #ffffff;
+    --muted: rgba(255,255,255,.72);
+    --accent: #a78bfa;
+    --accent2: #67e8f9;
+    --frame: #08080c;
+    --glow: rgba(124,58,237,.5);
+    --scrim: rgba(4,7,20,.5);
+    --device-shadow: 0 4vw 5vw rgba(0,0,0,.42), 0 0 0 1px rgba(255,255,255,.08) inset;
+    --badge-bg: rgba(255,255,255,.08);
+    --badge-border: rgba(255,255,255,.18);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg1);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
+      "HarmonyOS Sans SC", "Noto Sans SC", "Hiragino Sans", "Yu Gothic",
+      "Apple SD Gothic Neo", "Noto Sans KR", "Geeza Pro", "Noto Sans Arabic",
+      "Thonburi", "Noto Sans Thai", "Kohinoor Devanagari", "Microsoft YaHei", sans-serif;
+  }
+  #canvas {
+    position: fixed; inset: 0; overflow: hidden;
+    background:
+      radial-gradient(90% 72% at 88% -8%, var(--bg2) 0%, transparent 62%),
+      linear-gradient(155deg, var(--bg1) 0%, var(--bg2) 56%, var(--bg1) 100%);
+  }
+
+  /* ---------- background ---------- */
+  .bg, .bg-photo-wrap, .scrim, .sheen, .vignette, .grain { position: absolute; inset: 0; }
+  .bg { overflow: hidden; }
+  .bg-photo-wrap { opacity: 0; transition: opacity .2s linear; }
+  .bg-photo { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); filter: blur(calc(var(--u) * 1.15)) saturate(1.05); }
+  .has-photo .bg-photo-wrap { opacity: .9; }
+  .scrim { opacity: 0; }
+  .has-photo .scrim {
+    opacity: 1;
+    background: linear-gradient(180deg, var(--scrim) 0%, transparent 42%, transparent 70%, var(--scrim) 100%);
+  }
+  .orb {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    filter: blur(calc(var(--u) * 7));
+    mix-blend-mode: screen;
+  }
+  .orb.a { width: 78vw; height: 78vw; left: -28vw; top: -16vh; background: radial-gradient(circle at 50% 50%, var(--orb1), transparent 68%); opacity: .85; }
+  .orb.b { width: 66vw; height: 66vw; right: -22vw; top: 12vh; background: radial-gradient(circle at 50% 50%, var(--orb2), transparent 70%); opacity: .55; }
+  .orb.c { width: 62vw; height: 62vw; left: 6vw; bottom: -24vh; background: radial-gradient(circle at 50% 50%, var(--orb3), transparent 70%); opacity: .32; }
+  .theme-light .orb { mix-blend-mode: multiply; opacity: .55; }
+  .theme-light .orb.b { opacity: .38; }
+  .theme-light .orb.c { opacity: .26; }
+  .has-photo .orb { opacity: .3; }
+  .sheen {
+    background: linear-gradient(114deg, transparent 34%, rgba(255,255,255,.075) 47%, transparent 61%);
+    mix-blend-mode: soft-light; opacity: .85;
+  }
+  .vignette {
+    background: radial-gradient(125% 82% at 50% 18%, transparent 54%, rgba(0,0,0,.20) 100%);
+  }
+  .theme-light .vignette {
+    background: radial-gradient(125% 82% at 50% 18%, transparent 54%, rgba(80,55,25,.07) 100%);
+  }
+  .grain {
+    inset: -50%;
+    opacity: .045;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  }
+  .theme-light .grain { opacity: .035; }
+
+  /* ---------- brand ---------- */
+  .brand {
+    position: absolute; z-index: 4; left: 7vw; top: 4.3vh;
+    display: none; align-items: center; gap: calc(var(--u) * 1.3); max-width: 74vw;
+  }
+  .has-brand .brand { display: flex; }
+  .brand img { height: calc(var(--u) * 5.4); width: auto; max-width: 22vw; object-fit: contain; display: block; }
+  .brand .initial {
+    width: calc(var(--u) * 5.4); height: calc(var(--u) * 5.4); border-radius: calc(var(--u) * 1.5); display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg1); font-size: calc(var(--u) * 2.7); font-weight: 800; letter-spacing: -.03em;
+    box-shadow: 0 calc(var(--u) * 1) calc(var(--u) * 2.4) rgba(0,0,0,.18);
+  }
+  .brand .name {
+    font-size: calc(var(--u) * 2.15); font-weight: 700; letter-spacing: .01em; color: var(--ink);
+    opacity: .92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ---------- copy ---------- */
+  .copy {
+    position: absolute; z-index: 3; left: 7vw; top: 8vh; width: 86vw;
+    display: flex; flex-direction: column; align-items: flex-start; gap: calc(var(--u) * 1.6);
+  }
+  .has-brand .copy { top: 11vh; }
+  .eyebrow {
+    font-size: calc(var(--u) * 1.6); line-height: 1.2; font-weight: 750; letter-spacing: .17em;
+    text-transform: uppercase; color: var(--accent2); opacity: .95; white-space: nowrap;
+  }
+  .title {
+    margin: 0; font-size: calc(var(--u) * 7.2); line-height: 1.1; font-weight: 820; letter-spacing: -.022em;
+    color: var(--ink); text-wrap: balance; max-width: 100%;
+  }
+  .accent {
+    background: linear-gradient(100deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .subtitle {
+    margin: 0; font-size: calc(var(--u) * 2.75); line-height: 1.48; font-weight: 500;
+    color: var(--muted); max-width: 78%; text-wrap: pretty; white-space: pre-line;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: calc(var(--u) * .65);
+    margin-top: calc(var(--u) * .35); padding: calc(var(--u) * .72) calc(var(--u) * 1.35);
+    border: 1px solid var(--badge-border); border-radius: 999px;
+    background: var(--badge-bg); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    color: var(--ink); font-size: calc(var(--u) * 2.05); line-height: 1; font-weight: 650;
+    letter-spacing: .01em; white-space: nowrap;
+  }
+  .eyebrow:empty, .subtitle:empty, .badge:empty { display: none; }
+  .theme-light .badge { background: rgba(255,255,255,.55); border-color: rgba(25,20,15,.1); }
+  .theme-light .title { font-weight: 800; }
+
+  /* ---------- stage / device ---------- */
+  .stage { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  .stage::before {
+    content: ""; position: absolute; z-index: 0; left: 50%; top: 42vh;
+    width: 96vw; height: 58vh; transform: translate(-50%, -24%);
+    background: radial-gradient(ellipse at center, var(--glow), transparent 68%);
+    filter: blur(calc(var(--u) * 3)); opacity: .9;
+  }
+  .device {
+    position: absolute; z-index: 1; left: 50%; top: 36vh;
+    transform: translateX(-50%);
+    background: linear-gradient(150deg, #3d3d46 0%, var(--frame) 34%, #202027 72%, var(--frame) 100%);
+    box-shadow: var(--device-shadow);
+  }
+  .device-phone { padding: calc(var(--u) * .72); border-radius: calc(var(--u) * 8.4); }
+  .device-phone .screen { border-radius: calc(var(--u) * 7.8); }
+  .device-tablet { padding: calc(var(--u) * .95); border-radius: calc(var(--u) * 4.7); }
+  .device-tablet .screen { border-radius: calc(var(--u) * 3.9); }
+  .device-fold { padding: calc(var(--u) * .95); border-radius: calc(var(--u) * 5); }
+  .device-fold .screen { border-radius: calc(var(--u) * 4.1); }
+  .device-fold.no-crease .screen::after { display: none; }
+  .device-fold .screen::after {
+    content: ""; position: absolute; z-index: 2; top: 0; bottom: 0; left: 50%;
+    width: calc(var(--u) * .16); transform: translateX(-50%); pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,.09) 42%, rgba(255,255,255,.16) 50%, rgba(0,0,0,.09) 58%, transparent);
+    opacity: .85;
+  }
+  .screen {
+    position: relative; width: 100%; aspect-ratio: var(--ar, 9 / 19.5);
+    overflow: hidden; background: #000;
+  }
+  .screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .dynamic-island {
+    display: none; position: absolute; z-index: 3; left: 50%; top: 1.35%;
+    width: 26%; height: 3.6%; transform: translateX(-50%);
+    background: #000; border-radius: 999px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.035);
+  }
+  .has-island .dynamic-island { display: block; }
+  .frame-flat .device { padding: 0; background: var(--frame); border-radius: calc(var(--u) * 5); box-shadow: var(--device-shadow); }
+  .frame-flat .device .screen { border-radius: calc(var(--u) * 5); }
+  .frame-none .device { padding: 0; background: transparent; box-shadow: 0 3vw 6vw rgba(0,0,0,.34); }
+  .frame-none .device .screen { border-radius: calc(var(--u) * 3.6); }
+  .theme-light .device { box-shadow: 0 3.4vw 5vw rgba(45,32,18,.28), 0 0 0 1px rgba(255,255,255,.08) inset; }
+
+  /* ---------- detail close-up card ---------- */
+  .detail-card {
+    display: none; position: absolute; z-index: 5;
+    left: 2vw; top: auto; bottom: 7vh; width: 32vw; aspect-ratio: 4 / 3;
+    border-radius: calc(var(--u) * 4); overflow: hidden;
+    background-color: #000; background-repeat: no-repeat;
+    border: 1px solid rgba(255,255,255,.19);
+    box-shadow: 0 2.6vw 5vw rgba(0,0,0,.42);
+    transform: rotate(-4deg);
+  }
+  .layout-detail .detail-card { display: block; }
+  .detail-card::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+    background: linear-gradient(135deg, rgba(255,255,255,.09), transparent 36%);
+  }
+  .theme-light .detail-card { border-color: rgba(30,20,10,.14); box-shadow: 0 2.6vw 5vw rgba(60,40,20,.22); }
+  .is-landscape .detail-card { left: auto; right: 2vw; top: auto; bottom: -3vh; width: 22vw; transform: rotate(3deg); }
+
+  /* ---------- layouts: portrait ---------- */
+  .layout-hero .device { left: 50%; top: 36vh; transform: translateX(-50%); }
+  .layout-split .device { left: auto; right: -6vw; top: 37vh; transform: rotate(-4deg); transform-origin: 50% 40%; }
+  .layout-split .stage::before { left: 78%; top: 58vh; }
+  .layout-minimal .copy {
+    left: 8vw; top: 8.5vh; width: 84vw; align-items: center; text-align: center;
+  }
+  .layout-minimal .title { font-size: calc(var(--u) * 6.25); }
+  .layout-minimal .subtitle { max-width: 72%; }
+  .layout-minimal .device { left: 50%; top: 30vh; transform: translateX(-50%); }
+  .layout-detail .device { left: 58%; top: 35vh; transform: translateX(-50%); }
+  .layout-detail .stage::before { left: 62%; top: 50vh; }
+
+  /* ---------- layouts: landscape ---------- */
+  .is-landscape.layout-hero .copy,
+  .is-landscape.layout-split .copy,
+  .is-landscape.layout-minimal .copy {
+    left: 7vw; top: 50%; width: 48vw; max-width: 48vw;
+    transform: translateY(-50%); align-items: flex-start; text-align: left;
+  }
+  .is-landscape .title { font-size: calc(var(--u) * 5.9); }
+  .is-landscape.layout-minimal .title { font-size: calc(var(--u) * 5.25); }
+  .is-landscape .subtitle { font-size: calc(var(--u) * 2.35); max-width: 100%; }
+  .is-landscape.layout-hero .device,
+  .is-landscape.layout-split .device,
+  .is-landscape.layout-minimal .device {
+    left: auto; right: 5.5vw; top: 50%;
+    transform: translateY(-50%) rotate(2deg); transform-origin: 50% 50%;
+  }
+  .is-landscape.layout-split .device { right: 3vw; transform: translateY(-50%) rotate(0deg); }
+  .is-landscape .stage::before { left: 76%; top: 50%; width: 55vw; height: 90vh; transform: translate(-50%, -50%); }
+
+  /* ---------- right-to-left locales ---------- */
+  .is-rtl .brand { left: auto; right: 7vw; }
+  .is-rtl .copy { left: auto; right: 7vw; align-items: flex-end; text-align: right; }
+  .is-rtl .subtitle { text-align: right; }
+  .is-rtl.layout-minimal .copy { left: 8vw; right: auto; align-items: center; text-align: center; }
+  .is-rtl.layout-split .device { left: -6vw; right: auto; transform: rotate(4deg); }
+  .is-rtl.layout-split .stage::before { left: 22%; }
+  .is-landscape.is-rtl .copy { left: auto; right: 7vw; align-items: flex-end; text-align: right; }
+  .is-landscape.is-rtl .device { left: 5.5vw; right: auto; }
+  .is-landscape.is-rtl.layout-split .device { left: 3vw; right: auto; }
+  .is-landscape.is-rtl .detail-card { left: 2vw; right: auto; }
+  .is-rtl.layout-detail .detail-card { left: auto; right: 3vw; }
+
+  /* ---------- narrow banner (feature graphic-like) ---------- */
+  .is-banner .title { font-size: calc(var(--u) * 5.4); }
+  .is-banner .copy { width: 52vw; max-width: 52vw; }
+  .is-banner .device { right: 4vw; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div id="canvas">
+  <div class="bg">
+    <div class="bg-photo-wrap"><img class="bg-photo" id="bg-photo" alt=""></div>
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+    <div class="sheen"></div>
+    <div class="scrim"></div>
+    <div class="vignette"></div>
+    <div class="grain"></div>
+  </div>
+
+  <div class="brand" id="brand">
+    <img id="brand-logo" alt="" class="hidden">
+    <div class="initial hidden" id="brand-initial"></div>
+    <span class="name" id="brand-name"></span>
+  </div>
+
+  <section class="copy" id="copy">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 class="title" id="title"></h1>
+    <p class="subtitle" id="subtitle"></p>
+    <div class="badge" id="badge"></div>
+  </section>
+
+  <div class="stage">
+    <div class="device" id="device">
+      <div class="screen" id="screen"><img id="shot" alt=""><div class="dynamic-island"></div></div>
+    </div>
+    <div class="detail-card" id="detail-card"></div>
+  </div>
+</div>
+
+<script id="shot-data" type="application/json">__SHOT_DATA__</script>
+<script>
+(() => {
+  const data = JSON.parse(document.getElementById('shot-data').textContent);
+  const canvas = document.getElementById('canvas');
+  const root = document.documentElement;
+  const $ = (id) => document.getElementById(id);
+
+  const isLandscape = data.width > data.height;
+  const rtl = /^(ar|he|fa|ur)(-|$)/i.test(data.locale || '');
+  document.documentElement.lang = data.locale || 'en';
+  if (rtl) canvas.classList.add('is-rtl');
+  const banner = isLandscape && data.height / data.width < 0.62;
+  const theme = data.theme;
+
+  canvas.classList.add('layout-' + data.layout);
+  canvas.classList.add('frame-' + data.frame);
+  canvas.classList.add(isLandscape ? 'is-landscape' : 'is-portrait');
+  if (banner) canvas.classList.add('is-banner');
+  document.body.classList.toggle('theme-light', theme.mode === 'light');
+
+  const vars = {
+    '--bg1': theme.bg1, '--bg2': theme.bg2,
+    '--orb1': theme.orb1, '--orb2': theme.orb2, '--orb3': theme.orb3,
+    '--ink': theme.ink, '--muted': theme.muted,
+    '--accent': theme.accent, '--accent2': theme.accent2,
+    '--frame': theme.frame, '--glow': theme.glow, '--scrim': theme.scrim
+  };
+  for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
+  if (data.font) document.body.style.fontFamily = data.font;
+
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const rich = (s) => esc(s)
+    .replace(/\{([^{}]+)\}/g, '<span class="accent">$1</span>')
+    .replace(/\n/g, '<br>');
+
+  if (data.eyebrow) $('eyebrow').textContent = data.eyebrow;
+  if (data.title) $('title').innerHTML = rich(data.title);
+  if (data.subtitle) $('subtitle').textContent = data.subtitle;
+  if (data.badge) $('badge').textContent = data.badge;
+
+  const showBrand = data.showBrand && (data.logo || data.appName);
+  if (showBrand) {
+    canvas.classList.add('has-brand');
+    if (data.logo) {
+      $('brand-logo').src = data.logo;
+      $('brand-logo').classList.remove('hidden');
+    } else {
+      $('brand-initial').textContent = (data.appName || 'A').trim().slice(0, 1).toUpperCase();
+      $('brand-initial').classList.remove('hidden');
+    }
+    if (data.appName) $('brand-name').textContent = data.appName;
+    else $('brand-name').classList.add('hidden');
+  }
+
+  if (data.backgroundImage) {
+    canvas.classList.add('has-photo');
+    $('bg-photo').src = data.backgroundImage;
+  }
+
+  const device = $('device');
+  device.classList.add('device-' + data.deviceType);
+  if (data.crease === false) device.classList.add('no-crease');
+  const screen = $('screen');
+  if (data.island) screen.classList.add('has-island');
+  screen.style.setProperty('--ar', data.imageW + ' / ' + data.imageH);
+  $('shot').src = data.image;
+
+  const portraitShot = data.imageH >= data.imageW;
+  let deviceWidth;
+  if (isLandscape) {
+    deviceWidth = portraitShot
+      ? data.height * 0.90 * (data.imageW / data.imageH)
+      : data.width * 0.54;
+  } else {
+    deviceWidth = data.width * (
+      data.layout === 'minimal' ? 0.67 :
+      data.layout === 'split' ? 0.90 :
+      data.layout === 'detail' ? 0.82 : 0.86
+    );
+  }
+  deviceWidth *= (data.deviceScale || 1);
+  device.style.width = Math.round(deviceWidth) + 'px';
+
+  if (data.layout === 'detail') {
+    const card = $('detail-card');
+    // detailZoom is source magnification: 1 = native pixels, 2 = 200%,
+    // independent of the card's own size. Focus [x, y] is 0..1 of the source.
+    const mag = Math.min(4, Math.max(1.05, Number(data.detailZoom) || 1.8));
+    const focus = Array.isArray(data.detailFocus) ? data.detailFocus : [0.5, 0.5];
+    const fx = Math.min(1, Math.max(0, Number(focus[0]) || 0.5));
+    const fy = Math.min(1, Math.max(0, Number(focus[1]) || 0.5));
+    const applyDetail = () => {
+      const cw = card.clientWidth || 1;
+      const ch = card.clientHeight || 1;
+      const bgW = data.imageW * mag;
+      const bgH = data.imageH * mag;
+      const maxX = Math.max(1, bgW - cw);
+      const maxY = Math.max(1, bgH - ch);
+      const offX = Math.min(maxX, Math.max(0, fx * data.imageW * mag - cw / 2));
+      const offY = Math.min(maxY, Math.max(0, fy * data.imageH * mag - ch / 2));
+      card.style.backgroundImage = `url("${data.image}")`;
+      card.style.backgroundSize = `${bgW}px ${bgH}px`;
+      card.style.backgroundPosition = `${(offX / maxX) * 100}% ${(offY / maxY) * 100}%`;
+    };
+    applyDetail();
+    requestAnimationFrame(applyDetail);
+  }
+
+  function fitCopy() {
+    const copy = $('copy');
+    const title = $('title');
+    const subtitle = $('subtitle');
+
+    // Leave clear breathing room between copy and the device.
+    let copyTopVh = 8;
+    if (showBrand) copyTopVh = isLandscape ? 0 : 11;
+    else if (data.layout === 'minimal') copyTopVh = 8.5;
+    let copyBottomVh;
+    if (isLandscape) copyBottomVh = 87;
+    else if (data.layout === 'minimal') copyBottomVh = 29.5;
+    else if (data.layout === 'split') copyBottomVh = 35.5;
+    else if (data.layout === 'detail') copyBottomVh = 33.5;
+    else copyBottomVh = 34.5;
+
+    const maxH = data.height * Math.max(0.12, (copyBottomVh - copyTopVh) / 100);
+    let guard = 0;
+    while (copy.getBoundingClientRect().height > maxH && guard++ < 240) {
+      const ts = parseFloat(getComputedStyle(title).fontSize);
+      const minT = data.width * 0.028;
+      if (ts > minT) {
+        title.style.fontSize = Math.max(minT, ts - 2) + 'px';
+        continue;
+      }
+      const ss = parseFloat(getComputedStyle(subtitle).fontSize);
+      const minS = data.width * 0.017;
+      if (ss > minS) {
+        subtitle.style.fontSize = Math.max(minS, ss - 1) + 'px';
+        continue;
+      }
+      break;
+    }
+  }
+
+  fitCopy();
+  requestAnimationFrame(() => requestAnimationFrame(fitCopy));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCopy);
+  setTimeout(fitCopy, 120);
+  setTimeout(fitCopy, 400);
+})();
+</script>
+</body>
+</html>

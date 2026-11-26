@@ -1,0 +1,136 @@
+{
+  "app": {
+    "default": "Your App",
+    "zh-CN": "你的应用",
+    "en-US": "Your App"
+  },
+  "outDir": "./store-shots",
+  "logo": "./assets/logo.png",
+  "locales": ["zh-CN", "en-US"],
+  "theme": "aurora",
+  "layout": "hero",
+  "sets": [
+    {
+      "name": "iphone-6.9",
+      "device": "iphone-6.9",
+      "shots": [
+        {
+          "image": "./screens/01-home.png",
+          "eyebrow": { "zh-CN": "核心体验", "en-US": "THE CORE EXPERIENCE" },
+          "title": {
+            "zh-CN": "一句话说清\n{为什么值得下载}",
+            "en-US": "One line on why\n{it is worth it}"
+          },
+          "subtitle": {
+            "zh-CN": "用真实界面展示你最想强调的能力。",
+            "en-US": "Show the one capability that matters most."
+          },
+          "badge": {
+            "zh-CN": "4.9 ★ · 真实评分",
+            "en-US": "4.9 ★ · Real rating"
+          }
+        },
+        {
+          "image": "./screens/02-flow.png",
+          "theme": "sunset",
+          "layout": "split",
+          "eyebrow": { "zh-CN": "关键流程", "en-US": "THE FLOW" },
+          "title": {
+            "zh-CN": "把复杂的事，\n变得{简单}",
+            "en-US": "Make the hard thing\nfeel {simple}"
+          },
+          "subtitle": {
+            "zh-CN": "展示用户完成核心任务的那一步。",
+            "en-US": "Show the step where the core task gets done."
+          }
+        },
+        {
+          "image": "./screens/03-result.png",
+          "theme": "paper",
+          "layout": "detail",
+          "detailFocus": [0.5, 0.55],
+          "detailZoom": 1.4,
+          "eyebrow": { "zh-CN": "结果与回顾", "en-US": "RESULTS" },
+          "title": {
+            "zh-CN": "每一次投入，\n都{看得见}",
+            "en-US": "See every\n{focused} minute"
+          },
+          "subtitle": {
+            "zh-CN": "用真实数据或结果截图收尾。",
+            "en-US": "Close with a real result or insight."
+          }
+        }
+      ]
+    },
+    {
+      "name": "iphone-6.3",
+      "device": "iphone-6.3",
+      "shots": [
+        {
+          "image": "./screens/01-home.png",
+          "eyebrow": { "zh-CN": "核心体验", "en-US": "THE CORE EXPERIENCE" },
+          "title": {
+            "zh-CN": "一句话说清\n{为什么值得下载}",
+            "en-US": "One line on why\n{it is worth it}"
+          },
+          "subtitle": {
+            "zh-CN": "同一套设计，输出 2026 年 iPhone 必填尺寸。",
+            "en-US": "The same design at the 2026 required iPhone size."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ipad-13",
+      "device": "ipad-13",
+      "locales": [],
+      "shots": [
+        {
+          "image": "./screens/ipad-home.png",
+          "theme": "paper",
+          "layout": "hero",
+          "eyebrow": "为 iPad 设计",
+          "title": "为更大的屏幕，\n做更少的{打扰}",
+          "subtitle": "用原生 iPad 截图，不要拿手机图硬撑。"
+        }
+      ]
+    },
+    {
+      "name": "play-phone",
+      "device": "play-phone",
+      "locales": [],
+      "shots": [
+        {
+          "image": "./screens/android-home.png",
+          "theme": "sunset",
+          "layout": "hero",
+          "eyebrow": "Android 专享",
+          "title": "把今天，\n专注成{喜欢的样子}",
+          "subtitle": "Google Play 至少 2 张，建议 4–8 张。"
+        },
+        {
+          "image": "./screens/android-flow.png",
+          "theme": "midnight",
+          "layout": "split",
+          "title": "专注时，\n世界{静音}",
+          "subtitle": "展示关键流程或深色模式。"
+        }
+      ]
+    },
+    {
+      "name": "harmony-phone",
+      "device": "harmony-phone",
+      "locales": [],
+      "shots": [
+        {
+          "image": "./screens/harmony-home.png",
+          "theme": "ocean",
+          "layout": "hero",
+          "eyebrow": "HarmonyOS 原生体验",
+          "title": "这一刻，\n只做{一件事}",
+          "subtitle": "AppGallery 常见 3–5 张，提交前核对 AGC。"
+        }
+      ]
+    }
+  ]
+}
