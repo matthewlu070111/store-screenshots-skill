@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "store-screenshots",
+  "version": "1.0.0",
+  "description": "Generate pixel-perfect App Store, Google Play and AppGallery screenshots from real app captures — zero dependencies, local rendering, exact platform sizes.",
+  "keywords": [
+    "app-store",
+    "screenshots",
+    "google-play",
+    "appgallery",
+    "harmonyos",
+    "ios",
+    "android",
+    "iphone-duo",
+    "screenshot-generator",
+    "marketing-assets",
+    "cli"
+  ],
+  "homepage": "https://github.com/matthewlu070111/store-screenshots-skill#readme",
+  "bugs": {
+    "url": "https://github.com/matthewlu070111/store-screenshots-skill/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlu070111/store-screenshots-skill.git"
+  },
+  "author": {
+    "name": "Matthew Lu",
+    "url": "https://github.com/matthewlu070111"
+  },
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "bin": {
+    "store-screenshots": "scripts/generate.mjs",
+    "store-shots": "scripts/generate.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./presets": "./presets.json",
+    "./themes": "./themes.json",
+    "./package.json": "./package.json",
+    "./schema": "./schema/config.schema.json"
+  },
+  "files": [
+    "scripts/generate.mjs",
+    "src",
+    "templates",
+    "references",
+    "schema",
+    "presets.json",
+    "themes.json",
+    "SKILL.md",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE",
+    "examples/README.md",
+    "examples/template.config.json",
+    "examples/demo/demo.config.json",
+    "examples/demo/assets"
+  ],
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "demo": "node scripts/generate.mjs examples/demo/demo.config.json",
+    "doctor": "node scripts/generate.mjs --doctor",
+    "presets": "node scripts/generate.mjs --list-presets",
+    "verify": "node scripts/generate.mjs --verify",
+    "build:demo-assets": "node scripts/build-demo-assets.mjs",
+    "check": "node scripts/check.mjs",
+    "lint": "npm run check",
+    "test": "node scripts/test.mjs test/unit test/integration",
+    "test:unit": "node scripts/test.mjs test/unit",
+    "test:integration": "node scripts/test.mjs test/integration",
+    "prepublishOnly": "npm run check && npm test"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

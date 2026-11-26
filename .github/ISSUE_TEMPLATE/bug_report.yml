@@ -1,0 +1,96 @@
+name: Bug report
+description: Something generated the wrong output, failed to run, or crashed.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please remove private screenshots, customer names,
+        tokens and other sensitive data before posting. A minimal config usually
+        reproduces the issue faster than a full app config.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the actual result and what you expected.
+      placeholder: "The title is clipped at 6.3\", or: the render fails with ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the exact command and a minimal config (redact paths).
+      placeholder: |
+        1. Run `node scripts/generate.mjs ./config.json --dry-run`
+        2. Run `node scripts/generate.mjs ./config.json`
+        3. Open the generated PNG
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Minimal config
+      description: Paste only the relevant set/shot. You can replace image paths with dummy names.
+      render: json
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - CLI or flags
+        - Config parsing / validation
+        - Rendering / layout
+        - Preset or size
+        - Theme or colors
+        - Localization / RTL
+        - manifest.json or preview.html
+        - Documentation
+        - Other
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node version, browser (from `--doctor`), and store-screenshots version.
+      placeholder: "macOS 15.3 · Node v22.14.0 · Chrome 133 · store-screenshots 1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: "`--doctor` output"
+      description: Run `node scripts/generate.mjs --doctor` and paste the output.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste the error output (or a link) and, if relevant, a sanitized generated image.
+      render: text
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and the troubleshooting table.
+          required: true
+        - label: I removed private or identifying data from this report.
+          required: true

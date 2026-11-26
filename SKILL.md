@@ -22,28 +22,34 @@ description: Generate pixel-perfect App Store / Google Play / AppGallery (Harmon
 
 ## 快速开始
 
+> 以下命令在仓库根目录执行。作为 skill 安装后，把 `scripts/generate.mjs` 换成
+> `~/.config/opencode/skills/store-screenshots/scripts/generate.mjs` 的绝对路径。
+
 ```bash
-# 1. 检查 Node 和浏览器
-node ~/.config/opencode/skills/store-screenshots/scripts/generate.mjs --doctor
+# 1. 检查 Node 和浏览器（会做一次 320×480 测试渲染）
+node scripts/generate.mjs --doctor
 
-# 2. 复制示例配置，改成自己的截图路径和文案
-cp ~/.config/opencode/skills/store-screenshots/examples/example.config.json ./store-shots.config.json
+# 2. 先跑内置演示：合成素材，不涉及真实产品
+node scripts/generate.mjs examples/demo/demo.config.json --dry-run
+node scripts/generate.mjs examples/demo/demo.config.json
+node scripts/generate.mjs --verify examples/demo/out
 
-# 3. 预览计划并校验图片路径
-node ~/.config/opencode/skills/store-screenshots/scripts/generate.mjs ./store-shots.config.json --dry-run
-
-# 4. 生成
-node ~/.config/opencode/skills/store-screenshots/scripts/generate.mjs ./store-shots.config.json
-
-# 5. 校验输出
-node ~/.config/opencode/skills/store-screenshots/scripts/generate.mjs --verify ./store-shots
+# 3. 复制模板，改成自己的截图路径和文案
+cp examples/template.config.json ./my-app.config.json
+# 编辑 image 路径后再预览、生成、校验
+node scripts/generate.mjs ./my-app.config.json --dry-run
+node scripts/generate.mjs ./my-app.config.json
+node scripts/generate.mjs --verify ./store-shots
 ```
 
 查看所有尺寸：
 
 ```bash
-node ~/.config/opencode/skills/store-screenshots/scripts/generate.mjs --list-presets
+node scripts/generate.mjs --list-presets
 ```
+
+`npm run demo` / `npm run verify -- examples/demo/out` 是上面演示命令的快捷方式。
+英文说明见 `README.md`，中文说明见 `README.zh-CN.md`。
 
 ## 工作流
 
@@ -169,7 +175,7 @@ node scripts/generate.mjs ./store-shots-duo.config.json --only duo
 
 ## 常用命令
 
-> 以下命令默认在 skill 目录下执行；在其他目录请用 `~/.config/opencode/skills/store-screenshots/scripts/generate.mjs` 的绝对路径。
+> 以下命令默认在仓库根目录执行；在其他目录请用 `~/.config/opencode/skills/store-screenshots/scripts/generate.mjs` 的绝对路径。
 
 ```bash
 # 只跑 iPhone 组
@@ -198,6 +204,7 @@ node scripts/generate.mjs --verify ./dist
 | 设备被裁切过多 | 换 `minimal`；或减少 `deviceScale`；或改 `hero` |
 | detail 特写位置不对 | 调整 `detailFocus`（0–1）和 `detailZoom`（1.2–2） |
 | 图片有 alpha | 生成器输出 RGB PNG；若源图有透明通道先转 PNG/JPEG |
+| `sandbox initialization failed` / 容器内渲染失败 | 在受信任的容器或 CI 中设置 `CHROME_NO_SANDBOX=1`（不要在日常机器上使用） |
 | 文件太大 | 用 `play-phone` 1080×1920 而非 1440×2560；减少背景照片 |
 | 颜色偏 | Chrome 已强制 sRGB；检查系统/显示器色彩配置 |
 | 字体想换 | `font: "serif"`、`"rounded"` 或自定义 CSS font-family |
@@ -207,15 +214,27 @@ node scripts/generate.mjs --verify ./dist
 ```text
 store-screenshots/
 ├── SKILL.md
+├── README.md / README.zh-CN.md   # 英文 / 中文 GitHub 文档
+├── package.json                  # CLI 元数据；零运行时依赖
 ├── presets.json
 ├── themes.json
-├── scripts/generate.mjs       # 生成、doctor、verify、预览
-├── templates/poster.html      # 版式/主题/设备框
+├── schema/config.schema.json     # 编辑器补全
+├── scripts/
+│   ├── generate.mjs              # CLI 入口
+│   ├── build-demo-assets.mjs     # 重建合成演示素材
+│   ├── check.mjs                 # 仓库卫生检查
+│   └── test.mjs                  # 跨平台测试发现
+├── src/                          # 配置、渲染、校验、预览模块
+├── templates/poster.html         # 版式/主题/设备框
 ├── references/
 │   ├── platform-specs.md
 │   ├── config-reference.md
 │   └── design-guide.md
-└── examples/example.config.json
+├── examples/
+│   ├── demo/                     # 可运行演示 + 合成源图
+│   └── template.config.json
+├── test/                         # node:test 单元/集成测试
+└── docs/                         # 架构文档、README 图片
 ```
 
 ## 重要限制
@@ -225,4 +244,4 @@ store-screenshots/
 - **不生成 App Preview 视频**；只支持同尺寸的静帧海报/首帧。
 - 不内置 Apple/Huawei 的受版权保护设备素材；使用的是通用 CSS 设备框。
 - 商店规范会更新；本 skill 的尺寸表更新于 **2026-11**，提交前仍应核对官方文档。
-- AGPL 参考项目的代码未被复制；本 skill 使用独立的 Node/HTML 实现。
+- AGPL 参考项目的代码未被复制；本 skill 使用独立的 Node/HTML 实现，以 MIT 许可证发布。

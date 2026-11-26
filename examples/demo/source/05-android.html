@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumen demo — Android home</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="android">
+<main class="screen">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="status-icons">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+      <svg class="wifi" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M2 6.5a15 15 0 0 1 20 0"/><path d="M5.5 10.5a10 10 0 0 1 13 0"/><path d="M9 14.5a5 5 0 0 1 6 0"/>
+        <circle cx="12" cy="17.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="battery"></span>
+    </span>
+  </div>
+
+  <header class="appbar">
+    <div class="mark"><img src="../assets/logo.svg" alt=""> Lumen</div>
+    <div class="avatar-me"></div>
+  </header>
+
+  <section class="hero-card">
+    <p class="kicker">Monday, 24 November</p>
+    <h2>Good morning,<br>Mia.</h2>
+    <p>42 minutes focused today. Your calmest week yet.</p>
+    <span class="pill">Start a 25-minute session →</span>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><b>Pick a mode</b><span>See all</span></div>
+    <div class="tiles">
+      <div class="tile">
+        <div class="t-ic">◐</div>
+        <b>Deep work</b>
+        <small>25 min · silent</small>
+      </div>
+      <div class="tile">
+        <div class="t-ic">▤</div>
+        <b>Read</b>
+        <small>15 min · rain</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="week-card">
+    <div class="week-head"><b>This week</b><span>6h 12m focused</span></div>
+    <div class="mini-bars">
+      <i style="height:35%"></i>
+      <i style="height:62%"></i>
+      <i style="height:44%"></i>
+      <i style="height:80%"></i>
+      <i class="on" style="height:56%"></i>
+      <i style="height:28%"></i>
+      <i class="on" style="height:70%"></i>
+    </div>
+  </section>
+
+  <nav class="bottom-nav">
+    <div class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span>Today</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span>Timer</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+      <span>Insights</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      <span>You</span>
+    </div>
+  </nav>
+</main>
+</body>
+</html>

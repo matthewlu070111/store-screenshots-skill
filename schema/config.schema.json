@@ -1,0 +1,560 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/matthewlu070111/store-screenshots-skill/main/schema/config.schema.json",
+  "title": "store-screenshots configuration",
+  "description": "Configuration for the store-screenshots CLI. Relative paths resolve from the config file directory.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "app": {
+      "$ref": "#/$defs/text"
+    },
+    "outDir": {
+      "type": "string",
+      "description": "Output directory. Relative to the config file; --out overrides relative to CWD."
+    },
+    "locales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/locale"
+      },
+      "uniqueItems": true,
+      "description": "When present, output goes to <outDir>/<locale>/."
+    },
+    "theme": {
+      "$ref": "#/$defs/theme"
+    },
+    "layout": {
+      "$ref": "#/$defs/layout"
+    },
+    "frame": {
+      "$ref": "#/$defs/frame"
+    },
+    "colors": {
+      "$ref": "#/$defs/colors"
+    },
+    "logo": {
+      "$ref": "#/$defs/logo"
+    },
+    "showBrand": {
+      "type": "boolean"
+    },
+    "font": {
+      "type": "string"
+    },
+    "deviceScale": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "badge": {
+      "$ref": "#/$defs/text"
+    },
+    "eyebrow": {
+      "$ref": "#/$defs/text"
+    },
+    "backgroundImage": {
+      "type": "string"
+    },
+    "orientation": {
+      "$ref": "#/$defs/orientation"
+    },
+    "detailZoom": {
+      "type": "number",
+      "minimum": 1.05,
+      "maximum": 4
+    },
+    "detailFocus": {
+      "$ref": "#/$defs/point"
+    },
+    "imageOrientation": {
+      "$ref": "#/$defs/imageOrientation"
+    },
+    "island": {
+      "type": "boolean"
+    },
+    "crease": {
+      "type": "boolean"
+    },
+    "sets": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/set"
+          },
+          "minItems": 1
+        },
+        {
+          "$ref": "#/$defs/set"
+        }
+      ]
+    },
+    "device": {
+      "type": "string",
+      "description": "Preset ID for a single-set config. Prefer sets[] for multiple devices."
+    },
+    "preset": {
+      "type": "string"
+    },
+    "size": {
+      "$ref": "#/$defs/size"
+    },
+    "width": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 8192
+    },
+    "height": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 8192
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/shot"
+      },
+      "minItems": 1
+    }
+  },
+  "anyOf": [
+    {
+      "required": [
+        "sets"
+      ]
+    },
+    {
+      "required": [
+        "device"
+      ]
+    },
+    {
+      "required": [
+        "preset"
+      ]
+    },
+    {
+      "required": [
+        "size"
+      ]
+    },
+    {
+      "required": [
+        "width",
+        "height"
+      ]
+    }
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "locale": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,19}$",
+      "examples": [
+        "zh-CN",
+        "en-US",
+        "ja-JP",
+        "pt-BR"
+      ]
+    },
+    "text": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/locale"
+          },
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1
+        }
+      ]
+    },
+    "logo": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "const": false
+        }
+      ]
+    },
+    "point": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "size": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 8192
+        },
+        {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 8192
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "hero",
+        "split",
+        "minimal",
+        "detail"
+      ]
+    },
+    "frame": {
+      "type": "string",
+      "enum": [
+        "bezel",
+        "flat",
+        "none"
+      ]
+    },
+    "orientation": {
+      "type": "string",
+      "enum": [
+        "portrait",
+        "landscape"
+      ]
+    },
+    "imageOrientation": {
+      "type": "string",
+      "enum": [
+        "any",
+        "portrait",
+        "landscape"
+      ]
+    },
+    "deviceType": {
+      "type": "string",
+      "enum": [
+        "phone",
+        "tablet",
+        "fold"
+      ]
+    },
+    "colors": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ]
+        },
+        "bg1": {
+          "type": "string"
+        },
+        "bg2": {
+          "type": "string"
+        },
+        "orb1": {
+          "type": "string"
+        },
+        "orb2": {
+          "type": "string"
+        },
+        "orb3": {
+          "type": "string"
+        },
+        "ink": {
+          "type": "string"
+        },
+        "muted": {
+          "type": "string"
+        },
+        "accent": {
+          "type": "string"
+        },
+        "accent2": {
+          "type": "string"
+        },
+        "frame": {
+          "type": "string"
+        },
+        "glow": {
+          "type": "string"
+        },
+        "scrim": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "theme": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/$defs/colors"
+            }
+          ]
+        }
+      ]
+    },
+    "shot": {
+      "type": "object",
+      "required": [
+        "image"
+      ],
+      "properties": {
+        "image": {
+          "$ref": "#/$defs/text"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "headline": {
+          "$ref": "#/$defs/text"
+        },
+        "subtitle": {
+          "$ref": "#/$defs/text"
+        },
+        "subheadline": {
+          "$ref": "#/$defs/text"
+        },
+        "eyebrow": {
+          "$ref": "#/$defs/text"
+        },
+        "badge": {
+          "$ref": "#/$defs/text"
+        },
+        "theme": {
+          "$ref": "#/$defs/theme"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "frame": {
+          "$ref": "#/$defs/frame"
+        },
+        "colors": {
+          "$ref": "#/$defs/colors"
+        },
+        "logo": {
+          "$ref": "#/$defs/logo"
+        },
+        "showBrand": {
+          "type": "boolean"
+        },
+        "backgroundImage": {
+          "type": "string"
+        },
+        "deviceScale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "font": {
+          "type": "string"
+        },
+        "detailZoom": {
+          "type": "number",
+          "minimum": 1.05,
+          "maximum": 4
+        },
+        "detailFocus": {
+          "$ref": "#/$defs/point"
+        },
+        "imageOrientation": {
+          "$ref": "#/$defs/imageOrientation"
+        },
+        "island": {
+          "type": "boolean"
+        },
+        "crease": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "set": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]+\\.png$"
+        },
+        "device": {
+          "type": "string"
+        },
+        "preset": {
+          "type": "string"
+        },
+        "size": {
+          "$ref": "#/$defs/size"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 8192
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 8192
+        },
+        "deviceType": {
+          "$ref": "#/$defs/deviceType"
+        },
+        "orientation": {
+          "$ref": "#/$defs/orientation"
+        },
+        "locales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/locale"
+          },
+          "uniqueItems": true
+        },
+        "shots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shot"
+          },
+          "minItems": 1
+        },
+        "image": {
+          "$ref": "#/$defs/text"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "headline": {
+          "$ref": "#/$defs/text"
+        },
+        "subtitle": {
+          "$ref": "#/$defs/text"
+        },
+        "subheadline": {
+          "$ref": "#/$defs/text"
+        },
+        "eyebrow": {
+          "$ref": "#/$defs/text"
+        },
+        "badge": {
+          "$ref": "#/$defs/text"
+        },
+        "theme": {
+          "$ref": "#/$defs/theme"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "frame": {
+          "$ref": "#/$defs/frame"
+        },
+        "colors": {
+          "$ref": "#/$defs/colors"
+        },
+        "logo": {
+          "$ref": "#/$defs/logo"
+        },
+        "showBrand": {
+          "type": "boolean"
+        },
+        "backgroundImage": {
+          "type": "string"
+        },
+        "font": {
+          "type": "string"
+        },
+        "deviceScale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "detailZoom": {
+          "type": "number",
+          "minimum": 1.05,
+          "maximum": 4
+        },
+        "detailFocus": {
+          "$ref": "#/$defs/point"
+        },
+        "imageOrientation": {
+          "$ref": "#/$defs/imageOrientation"
+        },
+        "island": {
+          "type": "boolean"
+        },
+        "crease": {
+          "type": "boolean"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "device"
+          ]
+        },
+        {
+          "required": [
+            "preset"
+          ]
+        },
+        {
+          "required": [
+            "size"
+          ]
+        },
+        {
+          "required": [
+            "width",
+            "height"
+          ]
+        }
+      ],
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "required": [
+                "shots"
+              ]
+            },
+            {
+              "required": [
+                "image"
+              ]
+            }
+          ]
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

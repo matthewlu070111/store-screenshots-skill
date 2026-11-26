@@ -196,8 +196,17 @@
 ```json
 {
   "sets": [
-    { "device": "ipad-13", "orientation": "landscape", "shots": [...] },
-    { "size": [2560, 1600], "deviceType": "tablet", "name": "ipad-landscape", "shots": [...] }
+    {
+      "device": "ipad-13",
+      "orientation": "landscape",
+      "shots": [{ "image": "./screens/ipad.png" }]
+    },
+    {
+      "size": [2560, 1600],
+      "deviceType": "tablet",
+      "name": "ipad-landscape",
+      "shots": [{ "image": "./screens/ipad.png" }]
+    }
   ]
 }
 ```
@@ -220,18 +229,21 @@
 示例：
 
 ```json
-{
-  "name": "duo-inner",
-  "device": "iphone-duo-inner",
-  "shots": [{ "image": "./duo-inner.png", "title": "展开，
-就是{专注空间}" }]
-},
-{
-  "name": "duo-preview",
-  "device": "iphone-duo-preview",
-  "orientation": "landscape",
-  "shots": [{ "image": "./home.png", "title": "横屏预览" }]
-}
+[
+  {
+    "name": "duo-inner",
+    "device": "iphone-duo-inner",
+    "shots": [
+      { "image": "./duo-inner.png", "title": "展开，\n就是{专注空间}" }
+    ]
+  },
+  {
+    "name": "duo-preview",
+    "device": "iphone-duo-preview",
+    "orientation": "landscape",
+    "shots": [{ "image": "./home.png", "title": "横屏预览" }]
+  }
+]
 ```
 
 内屏使用 `deviceType: "fold"`，设备框会加一条很淡的折痕；外屏使用普通手机框。
@@ -299,6 +311,8 @@ node scripts/generate.mjs <config.json>
   --doctor          检查 Node/浏览器/预设，并做一次测试渲染
   --list-presets    列出所有预设
   --verify <dir>    校验输出目录中的 manifest 和文件
+  --version         打印版本
+  --help            打印帮助
 ```
 
 环境变量：
@@ -321,4 +335,6 @@ node scripts/generate.mjs <config.json>
 
 ## 参考配置
 
-见同目录 `examples/example.config.json` 和项目中的 `examples/demo/demo.config.json`。
+- `examples/demo/demo.config.json`：可直接运行的完整演示（合成素材，含多语言、iPhone/iPad/Play）。
+- `examples/template.config.json`：复制后改成自己项目的多平台模板。
+- `schema/config.schema.json`：给编辑器用的 JSON Schema；在配置里加 `"$schema"` 即可获得补全。

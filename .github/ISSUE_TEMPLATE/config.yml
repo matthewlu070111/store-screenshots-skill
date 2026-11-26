@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/matthewlu070111/store-screenshots-skill/security/advisories/new
+    about: Please report vulnerabilities privately, not as a public issue.
+  - name: Configuration reference
+    url: https://github.com/matthewlu070111/store-screenshots-skill/blob/main/references/config-reference.md
+    about: Every config field, layout, theme and CLI option.
+  - name: Platform specifications
+    url: https://github.com/matthewlu070111/store-screenshots-skill/blob/main/references/platform-specs.md
+    about: Sizes, counts, alpha rules and compliance notes for each store.

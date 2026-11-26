@@ -1,0 +1,70 @@
+name: Feature request
+description: Suggest a preset, layout, theme, locale, CLI improvement or docs change.
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Good requests explain the user problem first, then the proposed change.
+        Store-requirement changes should include an official link.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the workflow that is currently difficult or impossible.
+      placeholder: "AppGallery now asks for ..., but the closest preset is ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should the tool do? Include a config example if useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other tools, workarounds, or a smaller change that would also work.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - New preset / size
+        - New layout
+        - New theme
+        - Localization / RTL
+        - CLI / automation
+        - Validation / manifest
+        - Documentation
+        - Other
+
+  - type: input
+    id: official
+    attributes:
+      label: Official specification link
+      description: Required for size or policy changes. Link the store's current documentation.
+      placeholder: "https://developer.apple.com/... or https://support.google.com/..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Checklist
+      options:
+        - label: This request does not ask the tool to fabricate ratings, reviews, awards or system UI.
+          required: true
+        - label: I searched existing issues and presets first.
+          required: true

@@ -1,0 +1,28 @@
+# Dependencies (the tool itself has none)
+node_modules/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and local environment
+*.log
+npm-debug.log*
+.env
+.env.*
+
+# Generated output and package tarballs
+*.tgz
+/out/
+/store-shots/
+/examples/demo/out/
+/examples/demo/.debug-html/
+.debug-html/
+
+# Tooling caches
+coverage/
+.nyc_output/
+.cache/
+.tmp/

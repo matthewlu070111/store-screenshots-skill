@@ -1,0 +1,147 @@
+{
+  "$schema": "../../schema/config.schema.json",
+  "app": {
+    "default": "Lumen",
+    "zh-CN": "Lumen 专注",
+    "en-US": "Lumen"
+  },
+  "outDir": "./out",
+  "logo": "./assets/logo.svg",
+  "locales": [
+    "en-US",
+    "zh-CN"
+  ],
+  "theme": "paper",
+  "layout": "hero",
+  "sets": [
+    {
+      "name": "iphone-6.3",
+      "device": "iphone-6.3",
+      "shots": [
+        {
+          "image": "./assets/screens/01-home.png",
+          "theme": "paper",
+          "layout": "hero",
+          "eyebrow": {
+            "en-US": "FOCUS, DAILY",
+            "zh-CN": "每日专注"
+          },
+          "title": {
+            "en-US": "Make room for\n{what matters}",
+            "zh-CN": "把时间，\n留给{重要的事}"
+          },
+          "subtitle": {
+            "en-US": "A calm timer for deep work — one session at a time.",
+            "zh-CN": "极简专注计时器，一次只做一件事。"
+          }
+        },
+        {
+          "image": "./assets/screens/02-session.png",
+          "theme": "midnight",
+          "layout": "split",
+          "eyebrow": {
+            "en-US": "ONE TAP",
+            "zh-CN": "一按开始"
+          },
+          "title": {
+            "en-US": "One tap.\nThe world goes {quiet}.",
+            "zh-CN": "一按开始，\n世界就{安静}了"
+          },
+          "subtitle": {
+            "en-US": "No feeds, no badges — just a timer and your intention.",
+            "zh-CN": "没有推送，没有红点，只剩你和当下。"
+          }
+        },
+        {
+          "image": "./assets/screens/03-insights.png",
+          "theme": "paper",
+          "layout": "detail",
+          "detailZoom": 1.05,
+          "detailFocus": [
+            0.24,
+            0.54
+          ],
+          "eyebrow": {
+            "en-US": "INSIGHTS",
+            "zh-CN": "每周回顾"
+          },
+          "title": {
+            "en-US": "See every\n{focused} minute",
+            "zh-CN": "看见每一次\n{投入}"
+          },
+          "subtitle": {
+            "en-US": "A quiet weekly review that shows progress, not pressure.",
+            "zh-CN": "不制造焦虑的周报，只记录真实的积累。"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ipad-13",
+      "device": "ipad-13",
+      "theme": "mint",
+      "layout": "hero",
+      "shots": [
+        {
+          "image": "./assets/screens/04-tablet.png",
+          "theme": "mint",
+          "layout": "hero",
+          "eyebrow": {
+            "en-US": "BUILT FOR IPAD",
+            "zh-CN": "为 iPad 而生"
+          },
+          "title": {
+            "en-US": "More screen.\n{Less noise}.",
+            "zh-CN": "更大的屏幕，\n更少的{打扰}"
+          },
+          "subtitle": {
+            "en-US": "A spacious layout for planning a calm week.",
+            "zh-CN": "用宽阔的布局，安排安静的一周。"
+          }
+        }
+      ]
+    },
+    {
+      "name": "play-phone",
+      "device": "play-phone",
+      "theme": "sunset",
+      "layout": "minimal",
+      "shots": [
+        {
+          "image": "./assets/screens/05-android.png",
+          "theme": "sunset",
+          "layout": "minimal",
+          "eyebrow": {
+            "en-US": "ANDROID",
+            "zh-CN": "Android 专享"
+          },
+          "title": {
+            "en-US": "Focus that\n{fits your day}",
+            "zh-CN": "把今天，\n专注成{喜欢的样子}"
+          },
+          "subtitle": {
+            "en-US": "Material You colors. Offline by default.",
+            "zh-CN": "跟随系统取色，离线也能用。"
+          }
+        },
+        {
+          "image": "./assets/screens/02-session.png",
+          "theme": "ocean",
+          "layout": "minimal",
+          "eyebrow": {
+            "en-US": "OFFLINE FIRST",
+            "zh-CN": "离线优先"
+          },
+          "title": {
+            "en-US": "Your data.\n{On your device}.",
+            "zh-CN": "数据留在\n{你的设备}"
+          },
+          "subtitle": {
+            "en-US": "No account required. Export any time.",
+            "zh-CN": "无需账号，随时可导出。"
+          }
+        }
+      ]
+    }
+  ]
+}

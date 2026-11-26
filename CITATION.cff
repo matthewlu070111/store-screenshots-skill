@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use Store Screenshots in research or production, please cite this repository."
+title: Store Screenshots
+abstract: "Generate pixel-perfect App Store, Google Play and AppGallery screenshots from real app captures with a zero-dependency local CLI."
+authors:
+  - family-names: Lu
+    given-names: Matthew
+    website: "https://github.com/matthewlu070111"
+repository-code: "https://github.com/matthewlu070111/store-screenshots-skill"
+url: "https://github.com/matthewlu070111/store-screenshots-skill"
+license: MIT
+keywords:
+  - app-store
+  - screenshots
+  - google-play
+  - appgallery
+  - ios
+  - android
+  - harmonyos
+  - screenshot-generator
+version: 1.0.0
+date-released: "2026-11-26"
