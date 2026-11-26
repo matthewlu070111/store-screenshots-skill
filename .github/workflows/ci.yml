@@ -57,6 +57,10 @@ jobs:
         run: npm run test:integration
 
       - name: Generate demo
+        # The hosted runner is an ephemeral VM; this avoids Chrome sandbox
+        # initialization failures in restricted environments.
+        env:
+          CHROME_NO_SANDBOX: "1"
         run: npm run demo
 
       - name: Verify demo
